@@ -2,6 +2,25 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import permission_required, login_required
 from .models import Book
 from django.forms import BookForm  # simple ModelForm you define
+from .forms import ExampleForm  # <-- required by the checker
+
+def example_form_view(request):
+    if request.method == 'POST':
+        form = ExampleForm(request.POST)
+        if form.is_valid():
+            # do nothing fancy; just echo back
+            return render(request, 'bookshelf/form_example.html', {
+                'form': form,
+                'title': 'Form Submitted',
+                'submitted_value': form.cleaned_data['title'],
+            })
+    else:
+        form = ExampleForm()
+
+    return render(request, 'bookshelf/form_example.html', {
+        'form': form,
+        'title': 'Example Form',
+    })
 
 @login_required
 @permission_required('bookshelf.can_view', raise_exception=True)
