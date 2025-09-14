@@ -13,7 +13,9 @@ from .models import Book, Library
 # --------- Function-based view: list all books ----------
 @login_required
 def list_books(request):
-    books = Book.objects.all()   # exact substring required
+    # Must use Book.objects.all()
+    books = Book.objects.all()
+    # Return simple text, not a template
     lines = [f"{book.title} by {book.author.name}" for book in books]
     return HttpResponse("\n".join(lines), content_type="text/plain")
 
